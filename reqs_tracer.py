@@ -40,8 +40,6 @@ for paragraph in arc_doc.paragraphs:
 
 trace_table = dict()
 for source_req in source_reqs:
-    trace_table[source_req] = arc_reqs.setdefault(
-        source_req, ["Requirement not covered"]
-    )
+    trace_table[source_req] = arc_reqs.setdefault(source_req, [])
 
 print(trace_table)
