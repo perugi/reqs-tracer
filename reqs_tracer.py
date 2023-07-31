@@ -16,7 +16,6 @@ for paragraph in reqs_doc.paragraphs:
 
 def get_heading_number(paragraph):
     heading_regex = r"^((\d+\.)+) [\w ]+"
-    # heading_regex = r"^((\d+\.)+).*"
     match = re.search(heading_regex, paragraph.text)
     if match:
         return match.group(0).strip()
@@ -33,13 +32,16 @@ for paragraph in arc_doc.paragraphs:
 
     match = re.search(req_id_pattern, paragraph.text)
     if match:
-        arc_reqs[match.group()] = current_heading
+        if arc_reqs[match.group()]:
+            arc_reqs[match.group()].append(current_heading)
+        else:
+            arc_reqs[match.group()] = [current_heading]
 
-# print(source_reqs)
-# print(arc_reqs)
 
 trace_table = dict()
 for source_req in source_reqs:
-    trace_table[source_req] = arc_reqs.setdefault(source_req, "Requirement not covered")
+    trace_table[source_req] = arc_reqs.setdefault(
+        source_req, ["Requirement not covered"]
+    )
 
 print(trace_table)
